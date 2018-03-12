@@ -22,10 +22,6 @@
             "type": "string",
             "defaultValue": "vnet-vdi01"
         },
-        "networkInterfaceName": {
-            "type": "string",
-            "defaultValue": "[concat(parameters('virtualMachineName'), '-nic')]"
-        },
         "adminPassword": {
             "type": "securestring",
             "defaultValue": "C0mit5310$12"
@@ -38,13 +34,9 @@
             "type": "string",
             "defaultValue": "subnet01"
         },
-        "publicIpAddressName": {
-            "type": "string",
-            "defaultValue": "[concat(parameters('virtualMachineName'), '-pip')]"
-        },
         "publicIpAddressType": {
             "type": "string",
-            "defaultValue": "dinamic"
+            "defaultValue": "dynamic"
         },
         "publicIpAddressSku": {
             "type": "string",
@@ -54,7 +46,8 @@
     "variables": {
         "vnetId": "[resourceId('rg-vdi','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "diagnosticsExtensionName": "IaaSDiagnostics"
+        "networkInterfaceName": "[concat(parameters('virtualMachineName'), '-nic')]",
+        "publicIpAddressName": "[concat(parameters('virtualMachineName'), '-pip')]"
     },
     "resources": [
         {
@@ -63,8 +56,7 @@
             "apiVersion": "2017-03-30",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]"
             ],
             "properties": {
                 "osProfile": {
@@ -97,19 +89,19 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
                         }
                     ]
                 }
             }
         },
         {
-            "name": "[parameters('networkInterfaceName')]",
+            "name": "[variables('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -121,7 +113,7 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('rg-vdi','Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                                "id": "[resourceId('rg-vdi','Microsoft.Network/publicIpAddresses', variables('publicIpAddressName'))]"
                             }
                         }
                     }
@@ -129,7 +121,7 @@
             }
         },
         {
-            "name": "[parameters('publicIpAddressName')]",
+            "name": "[variables('publicIpAddressName')]",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
