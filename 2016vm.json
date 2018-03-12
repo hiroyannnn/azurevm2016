@@ -3,51 +3,52 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "japanwest"
         },
         "virtualMachineName": {
             "type": "string",
-            "defaultvalue": "CSPCRD01"
+            "defaultValue": "CSPCRD01"
         },
         "virtualMachineSize": {
             "type": "string",
-            "defaultvalue": "Standard_A2"
+            "defaultValue": "Standard_A2"
         },
         "adminUsername": {
             "type": "string",
-            "defaultvalue": "spcadmin01"
+            "defaultValue": "spcadmin01"
         },
         "virtualNetworkName": {
             "type": "string",
-            "defaultvalue": "vnet-vdi01"
+            "defaultValue": "vnet-vdi01"
         },
         "networkInterfaceName": {
             "type": "string",
-            "defaultvalue": "[concat(parameters('virtualMachineName'), "-nic")]"
+            "defaultValue": "[concat(parameters('virtualMachineName'), '-nic')]"
         },
         "adminPassword": {
             "type": "securestring",
-            "defaultvalue": "C0mit5310$12"
+            "defaultValue": "C0mit5310$12"
         },
         "storageAccountName": {
             "type": "string",
-            "defaultvalue": "storagevdi"
+            "defaultValue": "storagevdi"
         },
         "subnetName": {
             "type": "string",
-            "defaultvalue": "subnet01"
+            "defaultValue": "subnet01"
         },
         "publicIpAddressName": {
             "type": "string",
-            "defaultvalue": "[concat(parameters('virtualMachineName'), "-pip")]"
+            "defaultValue": "[concat(parameters('virtualMachineName'), '-pip')]"
         },
         "publicIpAddressType": {
             "type": "string",
-            "defaultvalue": "dinamic"
+            "defaultValue": "dinamic"
         },
         "publicIpAddressSku": {
             "type": "string",
-            "defaultvalue": "basic"
+            "defaultValue": "basic"
         }
     },
     "variables": {
